@@ -12,7 +12,7 @@ To see this project in action:
 
 1. Checkout the code
 2. Put your account information in src/main/resources/credentials.properties
-2. Run this command:
+3. Run this command:
     mvn compile exec:java
 
 All code is in a single class: `nl.tweeenveertig.openstack.tutorial.MainClass`
