@@ -29,11 +29,18 @@
     </properties>
 
     <dependencies>
+
         <dependency>
-            <groupId>nl.tweeenveertig.openstack</groupId>
+            <groupId>org.javaswift</groupId>
             <artifactId>joss</artifactId>
-            <version>0.3.0</version>
+            <version>0.8.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -43,7 +50,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <configuration>
-                    <mainClass>nl.tweeenveertig.openstack.tutorial.MainClass</mainClass>
+                    <mainClass>org.javaswift.joss.tutorial.MainClass</mainClass>
                 </configuration>
             </plugin>
         </plugins>

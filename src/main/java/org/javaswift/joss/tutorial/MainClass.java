@@ -1,14 +1,15 @@
-package nl.tweeenveertig.openstack.tutorial;
+package org.javaswift.joss.tutorial;
+
+import org.javaswift.joss.client.factory.AccountConfig;
+import org.javaswift.joss.client.factory.AccountFactory;
+import org.javaswift.joss.model.Account;
+import org.javaswift.joss.model.Container;
+import org.javaswift.joss.model.StoredObject;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-
-import nl.tweeenveertig.openstack.client.Account;
-import nl.tweeenveertig.openstack.client.Container;
-import nl.tweeenveertig.openstack.client.StoredObject;
-import nl.tweeenveertig.openstack.client.impl.ClientImpl;
 
 /**
  * Simple class to test Joss functionality with.
@@ -17,13 +18,6 @@ import nl.tweeenveertig.openstack.client.impl.ClientImpl;
  */
 public class MainClass {
 
-    /**
-     * Utility class. Do not instantiate.
-     */
-    private MainClass() {
-        // NOthing to do.
-    }
-
     public static void main(String... args) {
 
         System.out.println("Hello World!");
@@ -31,14 +25,18 @@ public class MainClass {
         // Login
 
         ResourceBundle credentials = ResourceBundle.getBundle("credentials");
-        String tenant = credentials.getString("tenant");
-        String username = credentials.getString("username");
-        String password = credentials.getString("password");
-        String auth_url = credentials.getString("auth_url");
-        Account account = new ClientImpl().authenticate(tenant, username, password, auth_url);
+
+        AccountConfig config = new AccountConfig();
+        config.setTenant(credentials.getString("tenant"));
+        config.setUsername(credentials.getString("username"));
+        config.setPassword(credentials.getString("password"));
+        config.setAuthUrl(credentials.getString("auth_url"));
+        config.setMock(true);
+        AccountFactory factory = new AccountFactory();
+        factory.setConfig(config);
+        Account account = factory.createAccount();
 
         // Add content
-
         Container myContainer = account.getContainer("MyContainer");
         if (!myContainer.exists()) {
             myContainer.create();
@@ -53,24 +51,22 @@ public class MainClass {
         metadata.put("Information", "Almost, but not quite, entirely unlike tea.");
         someFile.setMetadata(metadata);
 
-
         // List contents
-
-        System.out.printf("Account summary: %d containers containing %d objects with a total of %d bytes%n", account.getContainerCount(),
-                          account.getObjectCount(), account.getBytesUsed());
+        System.out.printf("Account summary: %d containers containing %d objects with a total of %d bytes%n",
+                account.getCount(), account.getObjectCount(), account.getBytesUsed());
         printMetadata(false, account.getMetadata());
 
-        for (Container container : account.listContainers()) {
+        for (Container container : account.list()) {
 
             boolean isPublic = container.isPublic();
             System.out.printf("%nContainer: %s (%s, %d objects using %d bytes)%n", container.getName(), isPublic ? "public" : "private",
-                              container.getObjectCount(), container.getBytesUsed());
+                              container.getCount(), container.getBytesUsed());
             printMetadata(false, container.getMetadata());
 
-            if (container.getObjectCount() > 0) {
+            if (container.getCount() > 0) {
 
                 System.out.println("Contents:");
-                for (StoredObject object : container.listObjects()) {
+                for (StoredObject object : container.list()) {
 
                     System.out.printf("  %s%n", object.getName());
                     if (isPublic) {

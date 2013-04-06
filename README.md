@@ -16,3 +16,5 @@ To see this project in action:
     mvn compile exec:java
 
 All code is in a single class: `nl.tweeenveertig.openstack.tutorial.MainClass`
+
+Works with JOSS v0.8.1
