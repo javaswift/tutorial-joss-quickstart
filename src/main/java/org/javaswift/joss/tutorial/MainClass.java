@@ -26,13 +26,13 @@ public class MainClass {
 
         ResourceBundle credentials = ResourceBundle.getBundle("credentials");
 
-        AccountConfig config = new AccountConfig()
-            .setTenant(credentials.getString("tenant"))
-            .setUsername(credentials.getString("username"))
-            .setPassword(credentials.getString("password"))
-            .setAuthUrl(credentials.getString("auth_url"))
-            .setMock(true);
-        Account account = new AccountFactory(config).createAccount();
+        Account account = new AccountFactory()
+                .setTenant(credentials.getString("tenant"))
+                .setUsername(credentials.getString("username"))
+                .setPassword(credentials.getString("password"))
+                .setAuthUrl(credentials.getString("auth_url"))
+                .setMock(true)
+                .createAccount();
 
         // Add content
         Container myContainer = account.getContainer("MyContainer");
