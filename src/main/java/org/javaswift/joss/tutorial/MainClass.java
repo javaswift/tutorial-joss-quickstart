@@ -1,6 +1,5 @@
 package org.javaswift.joss.tutorial;
 
-import org.javaswift.joss.client.factory.AccountConfig;
 import org.javaswift.joss.client.factory.AccountFactory;
 import org.javaswift.joss.model.Account;
 import org.javaswift.joss.model.Container;
@@ -27,7 +26,7 @@ public class MainClass {
         ResourceBundle credentials = ResourceBundle.getBundle("credentials");
 
         Account account = new AccountFactory()
-                .setTenant(credentials.getString("tenant"))
+                .setTenantName(credentials.getString("tenant"))
                 .setUsername(credentials.getString("username"))
                 .setPassword(credentials.getString("password"))
                 .setAuthUrl(credentials.getString("auth_url"))
